@@ -20,6 +20,7 @@
 
 获知，服务器使用了linux系统，web服务使nginx1.14.0版本，192.168.72.146与192.168.72.145相同
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213221001740.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
+
 ` nmap --script http-methods --script-args http-methods.url-path="/" 192.168.72.145  `  
 探测网页所支持的方法，发现并不支持PUT方法
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213221040344.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
