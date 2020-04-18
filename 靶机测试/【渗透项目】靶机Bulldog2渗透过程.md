@@ -134,10 +134,10 @@ Referer: http://192.168.72.145/login
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213231838713.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 ### 进行垂直越权
 
+再次登录，通过Burpsuite抓包查看服务器回包的信息
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213232141713.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 
-
-再次登录，通过Burpsuite抓包查看服务器回包的信息
 ```
 # 回报的信息
 
