@@ -20,7 +20,8 @@
 
 获知，服务器使用了linux系统，web服务使nginx1.14.0版本，192.168.72.146与192.168.72.145相同
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213221001740.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
-` nmap --script http-methods --script-args http-methods.url-path="/" 192.168.72.145  `  探测网页所支持的方法，发现并不支持PUT方法
+` nmap --script http-methods --script-args http-methods.url-path="/" 192.168.72.145  `  
+探测网页所支持的方法，发现并不支持PUT方法
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213221040344.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 
 > **POST 方法用来传输实体的主体，PUT方法用来传输文件，自身不带验证机制** 
@@ -33,14 +34,16 @@
 使用 `dpkg -L dirb` 来查看需要调用的字典路径
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213221147582.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 
-使用common字典对网站的两个IP的目录进行扫描，只发现两个路径![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213221300834.png)
+使用common字典对网站的两个IP的目录进行扫描，只发现两个路径
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213221300834.png)
 
 ### 信息整理筛选
 
 根据扫到的网站信息，发现此网站使用了nginX 1.14.0版本的网页服务器软件，尝试使用`searchsploit nginx`来检索相关的漏洞，未找到有价值的信息
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213221322570.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 
-IP地址开启了WEB服务，因此先直接访问已知的地址，寻找有用的信息![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213221349757.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
+IP地址开启了WEB服务，因此先直接访问已知的地址，寻找有用的信息
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213221349757.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213221411210.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 对页面进行浏览，发现该网站已经关闭注册
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213231304893.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
@@ -58,7 +61,8 @@ IP地址开启了WEB服务，因此先直接访问已知的地址，寻找有用
 
 因为要尝试注册用户，因此打开JS脚本中的main*.js，在JS脚本中搜索关键 register，经过审查，发现用户注册时需要name，email，username，password![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213231413237.png)
 
-因为网站现在关闭了注册，所以使用burpsuite在登陆账号时进行抓包，发现POST传递的路径是/users/authenticate。因为需要将登陆包改成注册包，结合代码审计到信息，应该将authenticate修改为register![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213231431167.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
+因为网站现在关闭了注册，所以使用burpsuite在登陆账号时进行抓包，发现POST传递的路径是/users/authenticate。因为需要将登陆包改成注册包，结合代码审计到信息，应该将authenticate修改为register
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213231431167.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 
 ```
 # 修改前抓到的登陆数据包
