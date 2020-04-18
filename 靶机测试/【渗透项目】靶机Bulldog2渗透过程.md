@@ -164,14 +164,12 @@ ETag: W/"18c-YIn4//rjps/AGEgvA6o4HKXdUxY"
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/201912132322483.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 
 要进行垂直提取，需要将这部分信息进行修改，因为不知道管理员级别的名称，需要使用auth_level关键字在代码中查找，出现了master_admin_user的可疑信息
-
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213232313998.png)
-修改jwt中的解码信息，获得新的编码数据
 
+修改jwt中的解码信息，获得新的编码数据
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213232334237.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 
 在登陆包发送前，选择接受回包，并用得到的信息对收到的回包进行修改
-
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20191213232358928.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyMjg4MTIz,size_16,color_FFFFFF,t_70)
 
 ```
